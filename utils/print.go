@@ -12,10 +12,6 @@ import (
 
 const PREFIX_LENGTH int = 12
 
-// Split printing statements into separate functions
-// TODO: include a 'type' category to differentiate between TV and movie
-// => separate formatEpisodes and make new getTimestamp function
-
 func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 	// look @ https://github.com/fatih/color for color formatting
 	b := color.New(color.Bold)
@@ -25,25 +21,24 @@ func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 
 	size, translate := getBorderSize(res.Anilist.Title.Romaji, res.Anilist.Title.English)
 	println(strings.Repeat("🌸", size))
-	println("🌸")
-	formatTitle(res.Anilist.Title.Romaji, res.Anilist.Title.English, translate, size)
-	formatEpisodes(res.Episode, malData.Episodes, res.From, res.To, malData.Type)
+	println()
+	formatTitle(res.Anilist.Title.Native, res.Anilist.Title.English, translate, size)
+	formatType(res, malData)
 
 	// Format score based on how good it is
 	if malData.Year != 0 {
-		b.Print("🌸 📅 Year: ")
+		b.Print("📅 Year: ")
 		color.Red("   %s %d", strings.Title(malData.Season), malData.Year)
 	}
-	b.Print("🌸 📈 Score:   ")
-	red.Printf("%.2f\n", malData.Score)
-	b.Print("🌸 🏆 Ranking: ")
+	formatScore(malData.Score)
+	b.Print("🏆 Ranking: ")
 	red.Printf("#%s\n", humanize.Comma(int64(malData.Rank)))
-	b.Print("🌸 📕 Source: ")
+	b.Print("📕 Source: ")
 	color.Red(" %s", malData.Source)
 
 	formatGenre(malData.Genres)
 
-	println("🌸")
+	println()
 	println(strings.Repeat("🌸", size))
 }
 
@@ -61,57 +56,65 @@ func getBorderSize(romanjiTitle string, englishTitle string) (int, bool) {
 		translateTitle = true
 	}
 
-	// flower emoji is roughly 2 characters wide
-	// (print len(prefix) + title) / 1.8 flower emojis
 	return int(float32(float32(borderLength) / float32(1.8))), translateTitle
 }
 
 func formatTitle(romanjiTitle string, englishTitle string, translate bool, borderSize int) {
 	b := color.New(color.Bold)
 	var title string
-	// borderChars := int(float32(borderSize) * float32(1.8))
+
 	// only print english title if title is in english
 	if translate {
-		b.Print("🌸 ✨ Anime:   ")
+		b.Print("✨ Anime:   ")
 		title = fmt.Sprintf("%s (%s)", romanjiTitle, englishTitle)
 		// suffix := strings.Repeat(" ", borderChars-len(title)) + "🌸"
 		color.New(color.FgRed).Printf("%s\n", title)
 	} else {
-		b.Print("🌸 ✨ Anime:   ")
+		b.Print("✨ Anime:   ")
 		title = romanjiTitle
 		// suffix := strings.Repeat(" ", borderChars-len(title)) + "🌸"
 		color.New(color.FgRed).Printf("%s\n", title)
 	}
-
 }
 
-func formatType()
-
-// Helper for formatting Episode information to output
-func formatEpisodes(episode int, totalEpisodes int, timestampTo float64, timestampFrom float64, mediaType string) {
+func formatType(res types.Result, malData jikan.AnimeBase) {
 	b := color.New(color.Bold)
-	// If jikan can't get an accurate total episode count (usual of large series i.e Once Piece)
-	// only print the episode number
-	if mediaType == "Movie" {
-		b.Printf("🌸 🎥 Movie:  ")
-		color.New(color.FgHiBlue).Add(color.Bold).Printf(" [%s - %s]\n", ConvertTimestamp(timestampTo), ConvertTimestamp(timestampFrom))
+	b.Print("❓ Type:    ")
+
+	if malData.Type == "Movie" {
+		color.New(color.FgRed).Println("Movie 🎥")
+		b.Print("🕐 Scene:  ")
+		formatTimestamp(res.From, res.To)
+		return
+	} else {
+		color.New(color.FgRed).Println("TV Show 📺")
+		formatEpisodes(res.Episode, malData.Episodes, res.From, res.To)
 		return
 	}
 
-	b.Printf("🌸 📺 Episode: ")
+}
+
+// Helper for formatting Episode information to output
+func formatEpisodes(episode int, totalEpisodes int, timestampTo float64, timestampFrom float64) {
+	color.New(color.Bold).Print("🕐 Episode: ")
+
 	if totalEpisodes != 0 {
 		color.New(color.FgRed).Printf("%d/%d @", episode, totalEpisodes)
 	} else {
 		color.New(color.FgRed).Printf("%d @", episode)
 	}
-	color.New(color.FgHiBlue).Add(color.Bold).Printf(" [%s - %s]\n", ConvertTimestamp(timestampTo), ConvertTimestamp(timestampFrom))
+	formatTimestamp(timestampFrom, timestampTo)
 }
 
+func formatTimestamp(from float64, to float64) {
+	color.New(color.FgHiBlue).Add(color.Bold).Printf(" [%s - %s]\n", ConvertTimestamp(from), ConvertTimestamp(to))
+}
+
+// Prints the anime's genres as found on MAL
 func formatGenre(genres []jikan.MalItem) {
-	b := color.New(color.Bold)
+	color.New(color.Bold).Print("📜 Genres:  ")
 	r := color.New(color.FgRed)
 
-	b.Print("🌸 📜 Genres:  ")
 	for i, genre := range genres {
 		if i != 0 {
 			r.Print(", " + genre.Name)
@@ -119,5 +122,21 @@ func formatGenre(genres []jikan.MalItem) {
 			r.Print(genre.Name)
 		}
 	}
-	b.Print("\n")
+	print("\n")
+}
+
+// Prints the score with a color dependent on how high it is.
+func formatScore(score float64) {
+	color.New(color.Bold).Print("📈 Score:   ")
+
+	if score >= 8 {
+		color.New(color.FgHiGreen).Println(score)
+		return
+	}
+	if score >= 7 {
+		color.New(color.FgHiYellow).Println(score)
+		return
+	}
+
+	color.New(color.FgHiRed).Println(score)
 }
