@@ -81,7 +81,3 @@ func urlSearch(linkToMedia string) {
 	// use highest similarity accuracy
 	utils.PrintSauce(identifiedAnime, malData.Data)
 }
-
-func init() {
-	rootCmd.AddCommand(urlCmd)
-}

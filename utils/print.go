@@ -109,7 +109,7 @@ func formatGenre(genres []jikan.MalItem) {
 
 	for i, genre := range genres {
 		if i != 0 {
-			r.Print(", " + genre.Name)
+			r.Print(", ", genre.Name)
 		} else {
 			r.Print(genre.Name)
 		}

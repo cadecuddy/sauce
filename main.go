@@ -1,5 +1,7 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+Copyright © 2022 CADE CUDDY
+MADE WITH: trace.moe API, JIKAN API
+INSPIRED BY: WHAT-ANIME-CLI
 */
 package main
 
