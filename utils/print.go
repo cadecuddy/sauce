@@ -12,10 +12,11 @@ import (
 
 const PREFIX_LENGTH int = 12
 
+// TODO: COMMENT FUNCTIONS
+
 func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 	// look @ https://github.com/fatih/color for color formatting
 	b := color.New(color.Bold)
-	// red := color.New(color.FgRed)
 
 	color.New(color.FgGreen).Add(color.Bold).Printf("✅ sauce found : [%f similarity]\n", res.Similarity)
 
@@ -126,7 +127,7 @@ func formatScore(score float64) {
 		return
 	}
 	if score >= 7 {
-		color.New(color.FgCyan).Add(color.Bold).Println(score)
+		color.New(color.FgYellow).Add(color.Bold).Println(score)
 		return
 	}
 
