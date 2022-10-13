@@ -12,8 +12,6 @@ import (
 
 const PREFIX_LENGTH int = 12
 
-// TODO: COMMENT FUNCTIONS
-
 func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 	// look @ https://github.com/fatih/color for color formatting
 	b := color.New(color.Bold)
@@ -28,7 +26,7 @@ func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 	println(strings.Repeat("🌸", size))
 	println()
 
-	formatTitle(res.Anilist.Title.Native, res.Anilist.Title.English, size)
+	formatTitle(res, size)
 	formatType(res, malData)
 	formatScore(malData.Score)
 	b.Print("🏆 Ranking: ")
@@ -63,10 +61,14 @@ func getBorderSize(nativeTitle string, englishTitle string) int {
 	return int(float32(borderLength))
 }
 
-func formatTitle(nativeTitle string, englishTitle string, borderSize int) {
+func formatTitle(res types.Result, borderSize int) {
 	color.New(color.Bold).Print("✨ Anime:   ")
-
-	title := fmt.Sprintf("%s (%s)", nativeTitle, englishTitle)
+	var title string
+	if len(res.Anilist.Title.English) != 0 {
+		title = fmt.Sprintf("%s (%s)", res.Anilist.Title.Native, res.Anilist.Title.English)
+	} else {
+		title = fmt.Sprintf("%s (%s)", res.Anilist.Title.Native, res.Anilist.Title.Romaji)
+	}
 	color.New(color.Bold).Printf("%s\n", title)
 }
 
