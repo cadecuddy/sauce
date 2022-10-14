@@ -6,8 +6,6 @@
   <img src="https://github.com/cadecuddy/sauce/blob/main/resources/demo.gif" alt="demo" />
 </p>
 
-<br>
-
 <h3 align="center"> <i>never find yourself asking <b>"sauce?"</b> ever again!</i>
 
 # 🔧 Installation
