@@ -12,6 +12,9 @@ import (
 	"github.com/darenliang/jikan-go"
 )
 
+// Analyzes initial trace.moe API response and handles errors.
+// A 3rd party MAL (MyAnimeList) API is queried to get more
+// detailed anime data to supplement the trace.moe data.
 func HandleResponse(res *http.Response, err error, s *spinner.Spinner) (types.Result, jikan.AnimeById) {
 	if err != nil {
 		fmt.Println("❌ Error with request")
@@ -31,11 +34,11 @@ func HandleResponse(res *http.Response, err error, s *spinner.Spinner) (types.Re
 	json.Unmarshal(body, &traceMoeResponse)
 	if traceMoeResponse.Error != "" {
 		s.Stop()
-		fmt.Println("❌ Invalid URL")
+		fmt.Println("❌ Invalid Media")
 		os.Exit(1)
 	}
 
-	// Use jikan API for MAL data
+	// Query jikan API for MAL data
 	identifiedAnime := traceMoeResponse.Result[0]
 	malData, err := jikan.GetAnimeById(identifiedAnime.Anilist.MalID)
 	if err != nil {

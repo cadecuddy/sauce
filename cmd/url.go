@@ -24,9 +24,7 @@ var urlCmd = &cobra.Command{
 // Makes a search via URL to the unidentified anime media.
 //
 // Checks the URL and once verififed, queries the trace.moe API,
-// getting the core information of the show. Once the response has
-// been recieved, a 3rd party MAL (MyAnimeList) API is queried to get more
-// detailed show data to supplement the trace.moe data.
+// getting the core information of the show.
 func urlSearch(linkToMedia string) {
 	// validate URL
 	_, err := url.ParseRequestURI(linkToMedia)
@@ -34,7 +32,6 @@ func urlSearch(linkToMedia string) {
 		fmt.Println("❌ Invalid URL")
 		return
 	}
-
 	s := utils.ConfigSpinner()
 	s.Start()
 
