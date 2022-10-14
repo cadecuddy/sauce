@@ -29,14 +29,14 @@ sauce url https://findthis.jp/anime.png
 sauce file demon-slayer.png
 ```
 
-## 📟 Environment Setup (contributors)
+# 📟 Environment Setup (contributors)
 
 `git clone https://github.com/cadecuddy/sauce.git` <br>
 `cd sauce` <br>
 
 If you find any bugs or want to add any cool features feel free to leave a PR!
 
-## 🤝 made with
+# 🤝 made with
 * [trace.moe](https://soruly.github.io/trace.moe-api/#/) - anime identification
 * [jikan-go](https://github.com/darenliang/jikan-go) - MyAnimeList data
 
