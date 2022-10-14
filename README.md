@@ -1,6 +1,6 @@
 <h1 align="center"> 🥫 sauce - CLI anime identification
 
-<h2 align="center"> sauce uses <a href="https://soruly.github.io/trace.moe-api/#/">trace.moe</a> to identify the anime in an image & serves you its essential statistics so you can determine if it's worth the watch. </h2>
+<h2 align="center"> sauce uses <a href="https://soruly.github.io/trace.moe-api/#/">trace.moe</a> to identify the anime in an image & serves you its essential details so you can determine if it's worth the watch. </h2>
 
 <p align="center">
   <img src="https://github.com/cadecuddy/sauce/blob/main/resources/demo.gif" alt="demo" />
