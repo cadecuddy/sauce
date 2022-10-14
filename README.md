@@ -1,0 +1,43 @@
+<h1 align="center"> 🥫 sauce - CLI anime identification
+
+<h2 align="center"> sauce uses <a href="https://soruly.github.io/trace.moe-api/#/">trace.moe</a> to identify the anime in an image & serves you its essential statistics so you can determine if it's worth the watch. </h2>
+
+![example of sauce in action]("resources/demo.gif")
+
+<br>
+
+<h3 align="center"> <i>never find yourself asking <b>"sauce?"</b> ever again!</i>
+
+# 🔧 Installation
+
+Install with [Go](https://go.dev/) install:
+```bash
+go install github.com/cadecuddy/sauce@latest
+```
+
+# 💻 Usage
+
+## 🔗 search by image url
+`sauce url <url>`
+```bash
+sauce url https://findthis.jp/anime.png
+```
+
+## 📂 search by image file
+`sauce file <path>`
+```bash
+sauce file demon-slayer.png
+```
+
+## 📟 Environment Setup (contributors)
+
+`git clone https://github.com/cadecuddy/sauce.git` <br>
+`cd sauce` <br>
+
+If you find any bugs or want to add any cool features feel free to leave a PR!
+
+## 🤝 made with
+* [trace.moe](https://soruly.github.io/trace.moe-api/#/) - anime identification
+* [jikan-go](https://github.com/darenliang/jikan-go) - MyAnimeList data
+
+### This project was inspired by [what-anime-cli](https://github.com/irevenko/what-anime-cli/) by [irevenko](https://github.com/irevenko). I appreciated the cli app he made, but I felt there was more potential in looking up the identified anime's MAL stats.
