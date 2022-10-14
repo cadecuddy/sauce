@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -19,11 +16,11 @@ var rootCmd = &cobra.Command{
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	rootCmd.SetUsageTemplate(`Usage:
-  sauce [command]
+  sauce [command] <file path/link>
 
 Available Commands:
-  file        Search using a local file.
-  url         Search for anime source using the url to the media.
+  file        Search using a path to local file.
+  url         Search using a url to media.
   help        Help about any command.
 
 Use "sauce [command] --help" for more information about a command.
