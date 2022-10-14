@@ -10,18 +10,20 @@ import (
 	"github.com/fatih/color"
 )
 
-const PREFIX_LENGTH int = 12
+const (
+	PREFIX_LENGTH int = 12
+	BORDER_MAX        = 28
+)
 
+// Prints the output of the result of the search to the terminal
 func PrintSauce(res types.Result, malData jikan.AnimeBase) {
-	// look @ https://github.com/fatih/color for color formatting
 	b := color.New(color.Bold)
-
 	color.New(color.FgGreen).Add(color.Bold).Printf("✅ sauce found : [%f similarity]\n", res.Similarity)
 
 	// regulate size & print top flower border
 	size := getBorderSize(res.Anilist.Title.Romaji, res.Anilist.Title.English)
-	if size >= 35 {
-		size = 28
+	if size >= BORDER_MAX {
+		size = BORDER_MAX
 	}
 	println(strings.Repeat("🌸", size))
 	println()
@@ -32,7 +34,6 @@ func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 	b.Print("🏆 Ranking: ")
 	color.New(color.FgHiMagenta).Printf("#%s\n", humanize.Comma(int64(malData.Rank)))
 	b.Print("📕 Source: ")
-	// color.New(color.FgRed).Add(color.FgYellow).Println("IS THIS ORANGE?")
 	color.Red(" %s", malData.Source)
 	// Movies won't have their year load from MAL Data
 	if malData.Year != 0 {
@@ -43,12 +44,14 @@ func PrintSauce(res types.Result, malData jikan.AnimeBase) {
 	b.Print("🎬 Studio:  ")
 	color.New(color.FgGreen).Println(malData.Studios[0].Name)
 
+	// Print bottom border
 	println()
 	println(strings.Repeat("🌸", size))
 }
 
-// Helper function to calculate the total flower border size
-// and determine if the title needs to be translated.
+// Helper function that crudely calculates the total flower border size.
+//
+// Maximum border size is
 func getBorderSize(nativeTitle string, englishTitle string) int {
 	var borderLength = PREFIX_LENGTH
 
@@ -61,6 +64,8 @@ func getBorderSize(nativeTitle string, englishTitle string) int {
 	return int(float32(borderLength))
 }
 
+// Prints the Anime's native title as well as an English
+// translation if one is available
 func formatTitle(res types.Result, borderSize int) {
 	color.New(color.Bold).Print("✨ Anime:   ")
 	var title string
@@ -72,6 +77,9 @@ func formatTitle(res types.Result, borderSize int) {
 	color.New(color.Bold).Printf("%s\n", title)
 }
 
+// Formats the episode/timestamp sections depending on the media form
+// of the anime. TV shows will print the episode section. Movies will
+// print a different 'Scene' section containing the scene's timestamp
 func formatType(res types.Result, malData jikan.AnimeBase) {
 	b := color.New(color.Bold)
 	b.Print("❓ Type:    ")
@@ -89,7 +97,7 @@ func formatType(res types.Result, malData jikan.AnimeBase) {
 
 }
 
-// Helper for formatting Episode information to output
+// Formats and prints the episode count if the detected anime is a TV Show
 func formatEpisodes(episode int, totalEpisodes int, timestampFrom float64, timestampTo float64) {
 	color.New(color.Bold).Print("🕐 Episode: ")
 
@@ -101,6 +109,7 @@ func formatEpisodes(episode int, totalEpisodes int, timestampFrom float64, times
 	formatTimestamp(timestampFrom, timestampTo)
 }
 
+// Generate the scene's timestamp in the anime
 func formatTimestamp(from float64, to float64) {
 	color.New(color.FgHiBlue).Add(color.Bold).Printf(" [%s - %s]\n", ConvertTimestamp(from), ConvertTimestamp(to))
 }
