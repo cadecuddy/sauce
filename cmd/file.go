@@ -17,11 +17,15 @@ const FILE_SEARCH = "https://api.trace.moe/search"
 // fileCmd represents the file command
 var fileCmd = &cobra.Command{
 	Use:   "file",
-	Short: "Search using a local file.",
-	Long: `File searches support most visual file mediums under 25MB including:
-- pdf
+	Short: "Search for anime source using a path to local file.",
+	Long: `Search for anime source using a path to local file.
+	
+File searches support most visual file mediums under 25MB including:
+- png
 - jpeg/jpg
 - gif
+- webp
+- many more!
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		fileSearch(args[0])
@@ -29,8 +33,9 @@ var fileCmd = &cobra.Command{
 	Args: cobra.MinimumNArgs(1),
 }
 
-func fileSearch(filename string) {
-	file, err := os.Open(filename)
+// Searches for anime based on file path input
+func fileSearch(filepath string) {
+	file, err := os.Open(filepath)
 	if err != nil {
 		fmt.Println("❌ Invalid file")
 		return
@@ -43,7 +48,7 @@ func fileSearch(filename string) {
 	// form file upload via https://gist.github.com/andrewmilson/19185aab2347f6ad29f5
 	buffer := &bytes.Buffer{}
 	writer := multipart.NewWriter(buffer)
-	part, _ := writer.CreateFormFile("file", filename)
+	part, _ := writer.CreateFormFile("file", filepath)
 	io.Copy(part, file)
 	writer.Close()
 
