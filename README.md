@@ -17,13 +17,13 @@ go install github.com/cadecuddy/sauce@latest
 
 # 💻 Usage
 
-## 🔗 search by image url
+### 🔗 search by image url
 `sauce url <url>`
 ```bash
 sauce url https://findthis.jp/anime.png
 ```
 
-## 📂 search by image file
+### 📂 search by image file
 `sauce file <path>`
 ```bash
 sauce file demon-slayer.png
