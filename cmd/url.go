@@ -19,6 +19,7 @@ var urlCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		urlSearch(args[0])
 	},
+	Args: cobra.MinimumNArgs(1),
 }
 
 // Makes a search via URL to the unidentified anime media.
